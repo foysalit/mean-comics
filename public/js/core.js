@@ -5,7 +5,7 @@ app.factory('resources', function($resource) {
 
   factory.routes = {
     characterAPI: $resource('/character', {}, {
-      fetch: {method: 'GET', params: {name: '@name'}, isArray: false }
+      fetch: {method: 'GET', params: {name: '@name'}, isArray: true }
     })
   };
 
@@ -16,13 +16,27 @@ app.controller('characterController', function($scope, resources, $sce) {
 
   $scope.searchCharacters = function() {
     resources.routes.characterAPI.fetch({name: $scope.name}, function done(response) {
-      $scope.character = response.results[0];
-      $scope.relatedCharacters = response.results.slice(1);
-      console.log($scope.relatedCharacters);
+      $scope.character = response[0];
+      $scope.relatedCharacters = response.slice(1);
     });
   };
 
-$scope.renderHtml = function (htmlCode) {
-    return $sce.trustAsHtml(htmlCode);
-};
+  $scope.resultsFound = function () {
+    return $scope.character && angular.isObject($scope.character);
+  };
+
+  $scope.setCurrentCharacter = function (character) {
+    $scope.relatedCharacters.push($scope.character);
+    $scope.character = character;
+
+    var relChars = $scope.relatedCharacters;
+
+    $scope.relatedCharacters = _.reject(relchars, function (relChar) {
+      return relChar.name == character.name;
+    });
+  };
+
+  $scope.renderHtml = function (htmlCode) {
+      return $sce.trustAsHtml(htmlCode);
+  };
 });

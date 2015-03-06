@@ -2,22 +2,30 @@ extends master
 
 block content
   .container
-    .jumbtron.text-center
-      h2 Search a Character
+    h2.v-center Search a Character
+    p.lead /// find a character by name
 
-    .container(ng-controller="characterController")
+    .row(ng-controller="characterController")
+      form.col-md-5
+        .input-group
+          input.form-control.input-md(type="text", ng-model="name")
+          span.input-group-btn
+            button.btn.btn-md.btn-warning.pull-right(type="submit", ng-click="searchCharacters()") search
+        p(ng-show="!resultsFound()")
+          i.yellow * no comic character found
 
-      .col-md-12
-        form
-          .form-group
-            input.form-control.text-center(type="text", ng-model="name")
-            br
-            button.btn.pull-right(type="submit", ng-click="searchCharacters()") search
+        div.more-results-block(ng-show="relatedCharacters.length > 0")
+          p
+            i.span /// more results
+            hr
+          div(ng-repeat="alt in relatedCharacters")
+            p
+              h5(ng-click="setCurrentCharacter(alt)") {{ alt.name }}
 
+      .col-md-1
 
-      .clearfix
-      .col-md-12 
-        img(ng-src="{{character.image.medium_url}}")
-        h4 {{character.name}}
-        p {{character.deck}}
-
+      .col-md-6.movie-block(ng-show="resultsFound()")
+        .col-md-12
+          img(ng-src="{{character.image.medium_url}}")
+          h4 {{character.name}}
+          p {{character.deck}}
