@@ -1,0 +1,23 @@
+extends master
+
+block content
+  .container
+    .jumbtron.text-center
+      h2 Search a Character
+
+    .container(ng-controller="characterController")
+
+      .col-md-12
+        form
+          .form-group
+            input.form-control.text-center(type="text", ng-model="name")
+            br
+            button.btn.pull-right(type="submit", ng-click="searchCharacters()") search
+
+
+      .clearfix
+      .col-md-12 
+        img(ng-src="{{character.image.medium_url}}")
+        h4 {{character.name}}
+        p {{character.deck}}
+
