@@ -16,4 +16,17 @@ module.exports = function (app) {
         res.json(JSON.parse(result.text).results);
       });
   });
+
+  app.get('/character/details', function(req, res) {
+
+    superagent
+      .get(req.query.url)
+      .query({api_key: config.api.key})    
+      .query({format: 'json'})
+      .end(function(err, result) {
+        //console.log(result.text);
+        //assuming first one is correct
+        res.json(JSON.parse(result.text).results);
+      });
+  });
 };
