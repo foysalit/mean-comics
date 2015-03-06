@@ -29,11 +29,7 @@ app.controller('characterController', function($scope, resources, $sce) {
     $scope.relatedCharacters.push($scope.character);
     $scope.character = character;
 
-    var relChars = $scope.relatedCharacters;
-
-    $scope.relatedCharacters = _.reject(relchars, function (relChar) {
-      return relChar.name == character.name;
-    });
+    $scope.relatedCharacters = _.without($scope.relatedCharacters, character);
   };
 
   $scope.renderHtml = function (htmlCode) {
